@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>NoChurnAi - Customer Insight Predictor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='churn.css') }}">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <img src="https://static.vecteezy.com/system/resources/thumbnails/057/530/648/small_2x/cute-red-robot-waving-hello-with-glowing-eyes-on-white-background-png.png" alt="AI Robot Logo">
+    </div>
+
+    <h1>NoChurnAi</h1>
+    <p class="intro">Predict whether a customer is likely to leave your telecom service. Fill in the details below to get started.</p>
+
+    <form method="POST">
+      <div class="form-group">
+        <select name="gender" required><option disabled selected value=""></option><option>Female</option><option>Male</option></select>
+        <label>Gender</label>
+      </div>
+      <div class="form-group">
+        <select name="SeniorCitizen" required><option disabled selected value=""></option><option value="0">No</option><option value="1">Yes</option></select>
+        <label>Senior Citizen</label>
+      </div>
+      <div class="form-group">
+        <select name="Partner" required><option disabled selected value=""></option><option>Yes</option><option>No</option></select>
+        <label>Partner</label>
+      </div>
+      <div class="form-group">
+        <select name="Dependents" required><option disabled selected value=""></option><option>Yes</option><option>No</option></select>
+        <label>Dependents</label>
+      </div>
+      <div class="form-group">
+        <input type="number" name="tenure" required placeholder=" ">
+        <label>Tenure (months)</label>
+      </div>
+      <div class="form-group">
+        <select name="PhoneService" required><option disabled selected value=""></option><option>Yes</option><option>No</option></select>
+        <label>Phone Service</label>
+      </div>
+      <div class="form-group">
+        <select name="MultipleLines" required><option disabled selected value=""></option><option>No</option><option>Yes</option><option>No phone service</option></select>
+        <label>Multiple Lines</label>
+      </div>
+      <div class="form-group">
+        <select name="InternetService" required><option disabled selected value=""></option><option>DSL</option><option>Fiber optic</option><option>No</option></select>
+        <label>Internet Service</label>
+      </div>
+      <div class="form-group">
+        <select name="OnlineSecurity" required><option disabled selected value=""></option><option>Yes</option><option>No</option></select>
+        <label>Online Security</label>
+      </div>
+      <div class="form-group">
+        <select name="OnlineBackup" required><option disabled selected value=""></option><option>Yes</option><option>No</option></select>
+        <label>Online Backup</label>
+      </div>
+      <div class="form-group">
+        <select name="DeviceProtection" required><option disabled selected value=""></option><option>Yes</option><option>No</option></select>
+        <label>Device Protection</label>
+      </div>
+      <div class="form-group">
+        <select name="TechSupport" required><option disabled selected value=""></option><option>Yes</option><option>No</option></select>
+        <label>Tech Support</label>
+      </div>
+      <div class="form-group">
+        <select name="StreamingTV" required><option disabled selected value=""></option><option>Yes</option><option>No</option></select>
+        <label>Streaming TV</label>
+      </div>
+      <div class="form-group">
+        <select name="StreamingMovies" required><option disabled selected value=""></option><option>Yes</option><option>No</option></select>
+        <label>Streaming Movies</label>
+      </div>
+      <div class="form-group">
+        <select name="Contract" required><option disabled selected value=""></option><option>Month-to-month</option><option>One year</option><option>Two year</option></select>
+        <label>Contract</label>
+      </div>
+      <div class="form-group">
+        <select name="PaperlessBilling" required><option disabled selected value=""></option><option>Yes</option><option>No</option></select>
+        <label>Paperless Billing</label>
+      </div>
+      <div class="form-group">
+        <select name="PaymentMethod" required><option disabled selected value=""></option><option>Electronic check</option><option>Mailed check</option><option>Bank transfer (automatic)</option><option>Credit card (automatic)</option></select>
+        <label>Payment Method</label>
+      </div>
+      <div class="form-group">
+        <input type="number" step="any" name="MonthlyCharges" required placeholder=" ">
+        <label>Monthly Charges</label>
+      </div>
+      <div class="form-group">
+        <input type="number" step="any" name="TotalCharges" required placeholder=" ">
+        <label>Total Charges</label>
+      </div>
+      <input type="submit" value="Predict">
+    </form>
+
+    {% if prediction is not none %}
+      <h3>Prediction: {{ 'Churn' if prediction == 1 else 'No Churn' }}</h3>
+      <p>Probability: {{ '%.2f' % probability }}</p>
+      <p>{{ message }}</p>
+    {% endif %}
+
+    <h2>Data Visualizations</h2>
+    <div class="plot-grid">
+        {% for key, plot in plots.items() %}
+          <div class="plot-card">
+            <h3>{{ key.replace('_', ' ').title() }}</h3>
+            <img src="{{ url_for('static', filename=plot) }}" alt="{{ key }}">
+          </div>
+        {% endfor %}
+    </div>
+  </div>
+</body>
+</html>
